@@ -1,0 +1,34 @@
+doctype html
+
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css")
+        script(src="https://code.jquery.com/jquery-3.6.4.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
+        //link(rel="stylesheet", href="/css/styles.css")
+        //script(src="/js/news-action.js")
+        script(src="/js/second.js")
+        script(src="/js/styles.js")
+        title Новости
+
+    body
+        header.modal-header
+            h3 Новости
+            a.nav-link(href="/users") Все пользователи
+            a.nav-link(href="/news") Новости
+
+        section#user-news
+            each elem in news
+                if (elem.status === 'active' || showBlocked)
+                    div.news-item
+                        h2
+                            a(href=`/${elem.userId}`) #{findUserById(elem.userId).name}
+                        p= elem.content
+                        p.time= elem.time
+                        if (elem.status === "active")
+                            button.btn.btn-primary(type="button", onclick=`blockNews('${elem.id}')`, id="blockNewsButton", data-id=elem.id) Заблокировать
+                        else
+                            button.btn.btn-success(type="button", onclick=`activateNews('${elem.id}')`, id="activateNewsButton", data-id=elem.id) Активировать
+

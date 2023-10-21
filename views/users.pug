@@ -1,0 +1,64 @@
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css")
+        script(src="https://code.jquery.com/jquery-3.6.4.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
+        //link(rel="stylesheet", href="/css/styles.css")
+        //script(src="/js/edit-user.js")
+        script(src="/js/main.js")
+        script(src="/js/styles.js")
+        title Список пользователей
+
+    body
+        header.modal-header
+            h3.section= h
+            a.nav-link(href="/news") Новости
+            a.nav-link(href="/users") Все пользователи
+
+        section#users-container
+            each user in users
+                div.user-item
+                    a(href=`/${user.id}`)
+                        img(src=user.photo, alt=`Фото ${user.name}`)
+                        div.user-info
+                            h3= user.name
+                            p= user.email
+                        div.admin-info
+                            p= user.role
+                            p= user.status
+                    button.btn.btn-primary.edit-button(type="button", data-toggle="modal", data-target=`#editUserModal-${user.id}`) Редактировать
+
+            each user in users
+                .modal.fade(id=`editUserModal-${user.id}`)
+                    .modal-dialog(role="document")
+                        .modal-content
+                            .modal-header
+                                h5.modal-title Редактирование данных пользователя
+                                button.close(type="button")
+                                    span(aria-hidden="true") ×
+                            .modal-body
+                                form#edit-user-form
+                                    .form-group
+                                        input.form-control(type="hidden" id="editUserId" name="userId" value=user.id)
+                                    .form-group
+                                        label(for="editUserName") Имя:
+                                        input.form-control(type="text", id="editUserName", name="name", value=user.name, required)
+                                    .form-group
+                                        label(for="editUserEmail") Почта:
+                                        input.form-control(type="text", id="editUserEmail", name="email", value=user.email, required)
+                                    .form-group
+                                        label(for="editUserRole") Роль:
+                                        select.form-control(id="editUserRole" name="role")
+                                            option(value="user", selected=user.role === 'user') Пользователь
+                                            option(value="admin", selected=user.role === 'admin') Администратор
+                                    .form-group
+                                        label(for="editUserStatus") Статус:
+                                        select.form-control(id="editUserStatus" name="status")
+                                            option(value="unconfirmed", selected=user.status === 'unconfirmed') Неподтвержденный
+                                            option(value="active", selected=user.status === 'active') Активный
+                                            option(value="blocked", selected=user.status === 'blocked') Заблокированный
+                                    button.btn.btn-primary(type="submit") Сохранить изменения
+
+

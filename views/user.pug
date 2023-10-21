@@ -1,0 +1,35 @@
+doctype html
+
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
+        //link(rel="stylesheet", href="/css/styles.css")
+        script(src="/js/styles.js")
+        title #{user.name}
+    body
+        header.modal-header
+            h3= user.name
+            a.nav-link(href="/news") Новости
+            a.nav-link(href="/users") Все пользователи
+
+        section#user-info
+            img(src=user.photo, alt=`Фото ${user.name}`)
+            div.user-details
+                h2= user.name
+                p Дата рождения: #{user.birthdate}
+                p Почта: #{user.email}
+                p
+                    a.page-link(href=`/friends/${user.id}`) Список друзей пользователя
+                    a.page-link(href=`/news/${user.id}`) Новости друзей пользователя
+
+        section#user-news
+            h2 Новости пользователя
+            each elem in news
+                if elem.userId === user.id && elem.status === "active"
+                    div.news-item
+                        h3= user.name
+                        p= elem.content
+                        p.time= elem.time
